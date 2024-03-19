@@ -1,0 +1,87 @@
+<%stylesheet_link_tag "style" %>
+
+<%if student_signed_in? %>
+  <%= current_student.email %>
+  <div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Date</th>
+        <th>Subject</th>
+        <th>Time</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <%
+        @data.each do |result|%>
+        <tr>
+          <td><%=result.date %></td>
+          <td><%=result.name %></td>
+          <td><%=result.time %></td>
+        </tr>
+
+      <%end %>
+
+      </tbody>
+
+    </table>
+
+
+  </div>
+  <%=button_to 'Sign out',destroy_student_session_path,method: :delete,class: "bot" %>
+<%end %>
+
+<%if teacher_signed_in? %>
+  <%= current_teacher.email %>
+
+
+  <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Subject</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      <%
+        @data.each do |result|%>
+        <tr>
+          <td><%=result.date %></td>
+          <td><%=result.name %></td>
+          <td><%=result.time %></td>
+        </tr>
+
+      <%end %>
+
+      </tbody>
+
+    </table>
+
+
+  </div>
+  <div class="add_subject_div">
+    <%= form_with url: "/",method: :get do |form|%>
+      <label/> Date:
+      <%= form.date_field :date,class: "input_field_teacher"%><br/>
+      <label/> Subject:
+      <%= form.text_field :subject,class: "input_field_teacher"%><br/>
+      <label/> Time:
+      <%= form.time_field :time,class: "input_field_teacher"%><br/>
+      <%= form.submit "Save",class: "sign-out-button" %>
+    <%end%>
+  </div>
+
+
+  <%=button_to 'Sign out',destroy_student_session_path,method: :delete,class: "bot" %>
+<%end %>
+
+<%if not teacher_signed_in? and not student_signed_in? %>
+<div class="sign_in_div">
+  <%=button_to 'Teacher',new_teacher_session_path,method: :get,class: "sign-out-button" %>
+  <%=button_to 'Student',new_student_session_path,method: :get, class: "sign-out-button"%>
+</div>
+<%end %>
